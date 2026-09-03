@@ -1,5 +1,8 @@
 * text=auto
+
 *.py text eol=lf
 *.md text eol=lf
+
+*.html linguist-documentation
+
 *.mp4 binary
-*.html linguist-documentation=true
