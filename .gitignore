@@ -4,10 +4,10 @@ __pycache__/
 
 .DS_Store
 
-*.mp4
-*.mov
-*.mkv
-*.avi
+/*.mp4
+/*.mov
+/*.mkv
+/*.avi
 
 legendas.srt
 
