@@ -1,187 +1,167 @@
-### Automatic Video Subtitler! ㏄
-# Gere Legendas De Qualquer Vídeo Automaticamente com Python!
+# 🎬 Automatic Video Subtitler
 
-Com esta ferramenta você vai conseguir gerar **legendas** **automaticamente** a partir de um vídeo utilizando `Python`, `Whisper` e incorporá-las diretamente ao vídeo com `MoviePy`. 👨🏻‍💻
+## 🎯 Objetivo
+Desenvolver uma aplicação capaz de transformar automaticamente a fala de um vídeo em legendas através de um **único** comando no Terminal, reduzindo o trabalho manual de transcrição e edição.
 
-Este projeto foi desenvolvido com o objetivo de automatizar uma parte do processo de edição de vídeo, te possibilitando **legendar** um **vídeo** através de um **único** comando no Terminal. 🧠
 
-# 🚀 Tecnologias utilizadas
+## 🚀 Tecnologias Utilizadas
 
-- [Python](https://www.python.org)
+- [Python 3.14](https://www.python.org)
 - [Whisper (faster-whisper)](https://pypi.org/project/faster-whisper/)
 - [MoviePy](https://pypi.org/project/moviepy/)
 - [FFmpeg](https://www.ffmpeg.org)
 
-# ⚙️ Recursos
+---
+
+## ⚙️ Resultado
 
 - **Execução** através de um **único comando** no Terminal.
+- **Transcrição automática** do áudio do vídeo com `Whisper`, identificando o exato momento em que cada palavra é falada.
+- **Geração automática** de arquivo `.srt` (*legenda*), com divisão adaptativa por pontuação e quantidade de palavras.
+- **Renderização** das legendas diretamente no vídeo (com texto centralizado e contorno para facilitar a leitura) e **exportação final** utilizando `MoviePy` e `FFmpeg`.
 
-- **Transcrição automática** do áudio **do vídeo** com `Whisper`, com a identificação do momento em que cada palavra é falada.
+---
 
-- **Geração automática** de um **arquivo .srt** (*legenda*), com divisão de legendas por pontuação e quantidade pré-definida de palavras.
+## 📦 Instalação
 
-- **Renderização** das legendas **diretamente no vídeo**, com texto centralizado com contorno para facilitar a leitura e **exportação do vídeo final** utilizando `MoviePy` e `FFmpeg`.
-
-# 📦 Instalação
-
-### No **Terminal**, clone o repositório:
+### 1. Clone o repositório e acesse a pasta
 
 ```bash
 git clone https://github.com/IsacFreitaas/python-automatic-video-subtitler.git
-```
 
-### Entre na **pasta** do projeto:
-
-```bash
 cd python-automatic-video-subtitler
 ```
 
-### **Crie** e **ative** o [**Ambiente Virtual:**](https://youtu.be/kyiLBafjpMQ)
-
+### 2. Crie e ative o ambiente virtual
 
 ```bash
+# Criar o ambiente virtual
 python3 -m venv venv
-```
 
-### MacOS X / Linux:
-
-```bash
+# Ativar no Linux / macOS:
 source venv/bin/activate
+
+# Ativar no Windows (PowerShell):
+.\venv\Scripts\Activate.ps1
+
+# Ativar no Windows (CMD):
+.\venv\Scripts\activate.bat
+
 ```
 
-### Windows:
+> 💡 *Dúvidas com ambientes virtuais? Assista a esse meu [tutorial sobre venv](https://youtu.be/kyiLBafjpMQ).*
+
+### 3. Instale as dependências Python
 
 ```bash
-venv\Scripts\activate
+pip install -r requirements.txt
 ```
 
-### 📦 Instale as dependências:
+---
 
-```bash
-pip3 install -r requirements.txt
-```
+### 🛠️ Pré-requisito: FFmpeg
 
-*Também é necessário instalar o **FFmpeg** e adicioná-lo ao **PATH** do sistema.
+O **FFmpeg** é necessário para o processamento de áudio e vídeo. Ele deve estar instalado e disponível no `PATH` do sistema.
 
-#### Para isso, siga os comandos:
+#### **Linux (Ubuntu/Debian):**
 
-
-Em distribuições **Linux**: 
 ```bash
 sudo apt update && sudo apt install ffmpeg
 ```
 
-No **MacOS X** (com o brew instalado):
+#### **macOS (via Homebrew):**
+
 ```bash
 brew install ffmpeg
 ```
 
-#### Já no **Windows**, entre no site e faça o download: https://www.ffmpeg.org
+#### **Windows:**
 
-# 🧠 Como usar
+Você pode instalar facilmente via terminal usando o `winget`:
 
-### **no Terminal, na pasta do projeto:**
-
-```bash
-python3 main.py nome_do_video.mp4*
+```cmd
+winget install ffmpeg
 ```
 
-- Ao invés de "`nome_do_video.mp4`", coloque o **local do seu vídeo** e a extensão do arquivo.
+*(Caso prefira a instalação manual, baixe os binários em [ffmpeg.org](https://www.ffmpeg.org) e adicione a pasta `bin` às Variáveis de Ambiente do sistema).*
 
-### Então o programa irá:
+---
 
-1. **Carregar** o modelo **Whisper**;
+## 🧠 Como Usar
 
-2. **Transcrever** o áudio do **vídeo**;
-
-3. Identificar os **timestamps** das palavras;
-
-4. Criar o **arquivo de legendas** `.srt`;
-
-5. **Dividir as legendas** em blocos menores (como foi pré-definido);
-
-6. **Renderizar as legendas sobre o vídeo**;
-
-7. **Exportar o vídeo final**.
-
-### O arquivo de saída será criado automaticamente no mesmo diretório do vídeo:
+Com o ambiente virtual ativo, execute o script passando o caminho do vídeo como argumento:
 
 ```bash
-nome_do_arquivo_legendado.mp4*
+python main.py /caminho/para/seu_video.mp4
 ```
 
-# ➡️ Como as legendas são divididas?
+### O que o programa fará automaticamente:
 
-#### O projeto utiliza os **timestamps individuais** fornecidos pelo `Whisper` para construir legendas menores e **sincronizadas** com a **fala**.
+1. Carrega o modelo **Whisper** (faster-whisper).
+2. Transcreve o áudio do vídeo com **timestamps** no nível de palavras.
+3. Gera o arquivo de legenda no formato `.srt`.
+4. Divide as legendas em blocos otimizados para leitura.
+5. Insere as legendas diretamente sobre o vídeo e renderiza.
+6. Exporta o vídeo final (`nome_do_video_legendado.mp4`) no mesmo diretório do arquivo original.
 
-Uma nova legenda é criada quando:
+---
 
-- existem pelo menos **3 palavras** e/ou o texto termina com `,`, `.`, `?` ou `!`;
+## ➡️ Lógica de Divisão das Legendas
 
-- ou o bloco chega a **5 palavras** (que é o máximo pré-definido).
+Para garantir uma leitura dinâmica e agradável (estilo *Shorts/Reels/TikTok*), o projeto utiliza os timestamps de cada palavra para criar blocos curtos e sincronizados.
 
-#### Isso evita manter frases **muito longas** na tela e permite que cada **legenda** utilize o **momento real** em que as palavras foram **pronunciadas**.
+Uma nova linha de legenda é gerada quando:
 
-# ⚙️ Fluxo do projeto:
+* Atinge o limite máximo de **5 palavras** por bloco.
+* Contém pelo menos **3 palavras** e finaliza com pontuação (`,`, `.`, `?` ou `!`).
 
+Isso impede frases longas na tela e mantém a legenda perfeitamente ritmada com a fala.
 
-                    Vídeo
-                      │
-                      ▼
-               faster-whisper
-                      │
-                      ▼
-            Transcrição + timestamps
-                      │
-                      ▼
-               Geração do .srt
-                      │
-                      ▼
-              Leitura com pysrt
-                      │
-                      ▼
-          Insere no vídeo com MoviePy
-                      │
-                      ▼
-               Vídeo legendado
+## ⚙️ Fluxo de Execução
 
-# ⚠️ Observações
+```mermaid
+graph TD
+    A[Vídeo de Entrada] --> B[faster-whisper]
+    B --> C[Transcrição + Timestamps]
+    C --> D[Geração do arquivo .srt]
+    D --> E[Processamento via pysrt]
+    E --> F[Renderização com MoviePy]
+    F --> G[Vídeo Final Legendado]
 
-#### Atualmente, por padrão, o **modelo de transcrição** utilizado é o **medium**, configurado para execução em **CPU**:
+```
 
-    WhisperModel(
-        "medium",
-        device="cpu",
-        compute_type="int8"
-    )
+---
 
-#### Modelos maiores e melhores podem oferecer **maior qualidade** de transcrição, mas também exigem mais **recursos computacionais** e **tempo de processamento**.
+## ⚠️ Configuração do Modelo e Performance
 
-#### A velocidade e a qualidade da transcrição podem variar de acordo com o hardware, qualidade do áudio e características do vídeo.
+Por padrão, o projeto está configurado para utilizar o modelo **medium** rodando em **CPU**:
 
-# 🎥 Este projeto é relacionado ao conteúdo do canal
+```python
+WhisperModel("medium", device="cpu", compute_type="int8")
+```
 
-#### Este **projeto** faz parte de uma série de **conteúdos** sobre automação utilizando **Python**, mostrando como tarefas normalmente realizadas **manualmente** podem ser **automatizadas** através de **programação**.
+* **Modelos menores** (`tiny`, `base`, `small`): Mais rápidos, porém menos precisos.
+* **Modelos maiores** (`medium`, `large-v2`, `large-v3`): Maior precisão na transcrição, porém exigem mais processamento e memória RAM/VRAM.
+* Se você possui uma GPU NVIDIA configurada com CUDA, pode alterar o parâmetro `device="cuda"` no código para acelerar significativamente o processo.
 
-#### **Documentei** **todo o processo**, mostrando a **construção** **do projeto** e **explicando** **na prática**, no momento da **construção inicial do projeto** no vídeo do YouTube. Confere lá: [Clique aqui.](https://youtu.be/va4TGsFv0p0) ⬅️
+## 🎥 Conteúdo Relacionado a esse projeto e melhorias
 
-## 👨🏻‍💻 Sobre mim:
+Este projeto foi criado como parte de uma série de conteúdos sobre **automação com Python**, demonstrando como substituir tarefas manuais de edição por código. No futuro, posso criar uma interface gráfica para esse programa para atingir um público maior para esse app. Esse é meu objetivo com este pequeno projeto Open-Source.
 
+🎬 **Assista ao vídeo de construção desse projeto no YouTube:** [Clique aqui para assistir](https://youtu.be/va4TGsFv0p0)
+
+---
+
+## 👨🏻‍💻 Sobre mim
 <p align="left"> <a href="https://www.youtube.com/@isaczeitgeist"> <img src="https://github.com/IsacFreitaas.png" width="145" alt="Meu perfil"> </a> <img src="https://github.com/IsacFreitaas/IsacFreitaas/assets/65254733/00d94d72-7789-4961-b1b2-d0313bc80b48" width="218" ></img> </p>
 
-# [Isac Freitas](https://www.instagram.com/isaczeitgeist)
+### [Isac Freitas](https://www.instagram.com/isaczeitgeist)
 
+**Desenvolvedor Python** | **Backend & Ciência de Dados** | **APIs e Automação**
 
-### Desenvolvedor **Python** | **Backend** & **Ciência de Dados** | **APIs** e **Automação** | Simplificando Python e transformando código em aplicações reais
+*Simplificando Python e transformando código em aplicações reais.*
 
-
-
-
-
-
-### ➡️ Me encontre nas redes sociais: [https://inktr.ee/isaczeitgeistpy](https://linktr.ee/isaczeitgeistpy)
-
-
+#### ➡️ Me encontre nas redes sociais: [https://inktr.ee/isaczeitgeistpy](https://linktr.ee/isaczeitgeistpy)
 
 ---
 
